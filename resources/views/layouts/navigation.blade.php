@@ -16,11 +16,11 @@
                     <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.dashboard') : route('/')" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.category') : route('/')" :active="request()->routeIs('admin.category')">
+                        {{ __('Category') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('product.index') : route('/')" :active="request()->routeIs('product.index')">
+                        {{ __('Product') }}
                     </x-nav-link>
                 </div>
             </div>
