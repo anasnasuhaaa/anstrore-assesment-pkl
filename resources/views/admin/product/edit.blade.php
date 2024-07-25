@@ -4,15 +4,15 @@
             {{ __('Edit Produk') }}
         </h2>
     </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form rm class="mx-auto" method="POST" action="/admin/product/{{ $product->id }}">
+                    <form enctype="multipart/form-data" class="mx-auto" method="POST"
+                        action="/admin/product/{{ $product->id }}">
                         @csrf
                         @method('put')
-
+                        <input type="hidden" name="id" value="{{ $product->id }}">
                         <div class="mb-5">
                             <label class="block mb-2 text-sm font-medium text-gray-900 ">Nama Produk</label>
                             <input type="text" name="name" value="{{ $product->name }}"
@@ -25,9 +25,12 @@
                             <label class="block mb-2 text-sm font-medium text-gray-900 ">Kategori</label>
                             <select name="category_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                                <option value="" selected> {{ $product->category_id }} </option>
                                 @foreach ($category as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @if ($item->id === $product->genre_id)
+                                        <option value="{{ $item->id }}" selected>{{ $item->name }}</option>
+                                    @else
+                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>

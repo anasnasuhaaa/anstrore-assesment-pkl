@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Category') }}
+            {{ __('Produk') }}
         </h2>
     </x-slot>
 
@@ -12,7 +12,7 @@
                     <div>
                         <form method="GET" action="{{ route('product.create') }}">
                             <button type="submit"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Tambah
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Tambah
                                 Produk</button>
                         </form>
                     </div>
@@ -33,11 +33,11 @@
                                     <th scope="col" class="text-center px-4 py-3">
                                         Gambar
                                     </th>
-                                    <th scope="col" class="px-4 py-3">
-                                        Harga
+                                    <th scope="col" class="px-4 py-3 text-center">
+                                        Stok
                                     </th>
                                     <th scope="col" class="px-4 py-3">
-                                        Stok
+                                        Harga Satuan
                                     </th>
                                     <th scope="col" class="px-4 py-3 text-center">
                                         Aksi
@@ -57,7 +57,7 @@
                                         </td>
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
-                                            {{ $item->category_id }}
+                                            {{ $item->category->name }}
                                         </td>
                                         <td scope="row"
                                             class="flex justify-center items-center px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
@@ -65,15 +65,17 @@
                                                 src="{{ asset('img/' . $item->image) }}" alt="">
                                         </td>
                                         <td scope="row"
-                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
+                                            class= "text-center px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
                                             {{ $item->stock }}
                                         </td>
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
-                                            {{ $item->price }}
+                                            {{ number_format($item->price, 0, ',', '.') }}
                                         </td>
                                         <td class="px-4 py-3">
                                             <div class="flex justify-center items-center">
+                                                <a href="/admin/product/{{ $item->id }}"
+                                                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2  ">Detail</a>
                                                 <a href="/admin/product/{{ $item->id }}/edit"
                                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2  ">Edit</a>
 

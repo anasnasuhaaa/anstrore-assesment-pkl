@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use File;
 use App\Models\Product;
 use App\Models\Category;
-use File;
+use Illuminate\Http\Request;
+use Illuminate\Support\Number;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -15,8 +17,8 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $product = Product::all();
-        return view('admin.product.index', ['product' => $product]);
+        $products = Product::with('category')->get();
+        return view('admin.product.index', ['product' => $products]);
     }
 
     /**
@@ -34,31 +36,40 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $request->validate([
-            "name" => 'required',
-            "category_id" => 'required',
-            "description" => 'required',
-            "price" => 'required',
-            "stock" => 'required',
-            "image" => 'required|image|mimes:jpg,png,jpeg'
-        ]);
+        try {
+            $request->validate([
+                "name" => 'required',
+                "category_id" => 'required',
+                "description" => 'required',
+                "price" => 'required',
+                "stock" => 'required',
+                "image" => 'required|image|mimes:jpg,png,jpeg'
+            ]);
 
-        $filename = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('img'), $filename);
+            Log::info('Validation passed');
 
-        $product = new Product();
-        $product->name = $request->name;
-        $product->category_id = $request->category_id;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->stock = $request->stock;
-        $product->image = $filename;
-        $product->save();
+            $filename = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('img'), $filename);
 
-        return redirect()->route('product.index');
+            Log::info('Image uploaded successfully: ' . $filename);
+
+            $product = new Product();
+            $product->name = $request->input('name');
+            $product->category_id = $request->input('category_id');
+            $product->description = $request->input('description');
+            $product->price = $request->input('price');
+            $product->stock = $request->input('stock');
+            $product->image = $filename;
+            $product->save();
+
+            Log::info('Product saved successfully');
+
+            return redirect()->route('product.index')->with('success', 'Product created successfully!');
+        } catch (\Exception $e) {
+            Log::error('Error occurred: ' . $e->getMessage());
+            return redirect()->back()->withErrors('An error occurred while creating the product. Please try again.');
+        }
     }
-
     /**
      * Display the specified resource.
      */
@@ -76,7 +87,7 @@ class ProductController extends Controller
     {
         //
         $product = Product::find($id);
-        $category = Category::all();
+        $category = Category::where('name', '!=', $product->category->name)->get();
         return view('admin.product.edit', ['product' => $product, 'category' => $category]);
     }
 
@@ -85,8 +96,33 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            "name" => 'required',
+            "category_id" => 'required',
+            "description" => 'required',
+            "price" => 'required',
+            "stock" => 'required',
+            "image" => 'image|mimes:jpg,png,jpeg'
+        ]);
 
+        $product = Product::find($id);
+        if ($request->has('image')) {
+            $path = 'img/';
+
+            File::delete($path . $product->image);
+            $filename = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('img'), $filename);
+            $product->image = $filename;
+        };
+
+        $product->name = $request->name;
+        $product->category_id = $request->category_id;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->stock = $request->stock;
+        $product->save();
+
+        return redirect()->route('product.index');
     }
     /**
      * Remove the specified resource from storage.
