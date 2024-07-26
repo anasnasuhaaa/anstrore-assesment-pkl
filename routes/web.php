@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserProductController;
 use App\Models\Product;
 
 use Illuminate\Support\Facades\Route;
@@ -46,3 +47,6 @@ Route::middleware(['auth', 'adminMiddleware'])->group(function () {
 Route::middleware(['auth', 'userMiddleware'])->group(function () {
     Route::get('/user/profile', [ProfileController::class, 'userEdit'])->name('profile.useredit');
 });
+// Product Route
+Route::get('/product/{id}', [UserProductController::class, 'show'])->name('product.detail');
+Route::get('/product/qr/{id}', [UserProductController::class, 'qr'])->name('qrcode.download');

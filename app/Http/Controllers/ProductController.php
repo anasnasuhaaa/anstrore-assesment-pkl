@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use File;
+use Illuminate\Support\Facades\File;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Number;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use SimpleSoftwareIO\QrCode\Generator;
 
 class ProductController extends Controller
 {
@@ -17,7 +20,11 @@ class ProductController extends Controller
     public function index()
     {
         //
-        $products = Product::with('category')->get();
+
+
+
+        $products = Product::all();
+
         return view('admin.product.index', ['product' => $products]);
     }
 
@@ -34,8 +41,9 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request,)
     {
+        $product = new Product();
         $request->validate([
             "name" => 'required',
             "category_id" => 'required',
@@ -44,21 +52,30 @@ class ProductController extends Controller
             "stock" => 'required',
             "image" => 'required|image|mimes:jpg,png,jpeg'
         ]);
-
-
+        // image
         $filename = time() . '.' . $request->image->extension();
         $request->image->move(public_path('img/product'), $filename);
 
+        $qr_filename = time() . '.' . 'png';
 
-        $product = new Product();
+
         $product->name = $request->input('name');
         $product->category_id = $request->input('category_id');
         $product->description = $request->input('description');
         $product->price = $request->input('price');
         $product->stock = $request->input('stock');
         $product->image = $filename;
+        $product->qrcode_file = $qr_filename;
         $product->save();
-
+        // QR Code
+        $qr = QrCode::size(200)->format('png')->generate(url('product/' . $product->id),);
+        $path = public_path('img/qrcodes');
+        // Pastikan direktori ada
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0755, true);
+        }
+        // Simpan QR code ke file
+        File::put($path . '/' . $qr_filename, $qr);
 
         return redirect()->route('product.index')->with('success', 'Product created successfully!');
     }
@@ -88,6 +105,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
         $request->validate([
             "name" => 'required',
             "category_id" => 'required',
@@ -125,11 +143,13 @@ class ProductController extends Controller
         //
         $product = Product::find($id);
 
-        $path = 'img/product/';
-        File::delete($path . $product->image);
+        // Remove Image file in Public path
+        $img_path = 'img/product/';
+        File::delete($img_path . $product->image);
+        $qr_path = 'img/qrcodes/';
+        File::delete($qr_path . $product->qrcode_file);
 
         $product->delete();
-
         return redirect(route('product.index'));
     }
 }

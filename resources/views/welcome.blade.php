@@ -51,12 +51,11 @@
                 <div class="p-6">
 
                     <a href="#">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Noteworthy technology
-                            acquisitions 2021</h5>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{ $item->name }}</h5>
                     </a>
                     <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology
                         acquisitions of 2021 so far, in reverse chronological order.</p>
-                    <a href="#"
+                    <a href="{{ route('product.detail', $item->id) }}"
                         class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Read more
                         <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -68,50 +67,5 @@
                 </div>
             </div>
         @endforeach
-
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-3.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-5.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-6.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-7.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-8.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-9.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-10.jpg" alt="">
-        </div>
-        <div>
-            <img class="h-auto max-w-full rounded-lg"
-                src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-11.jpg" alt="">
-        </div>
     </div>
 @endsection

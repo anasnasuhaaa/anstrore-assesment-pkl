@@ -4,6 +4,7 @@
             <h2 class="font-semibold text-xl leading-10 text-gray-800">
                 {{ __('Manage Products') }}
             </h2>
+
             <form method="GET" action="{{ route('product.create') }}">
                 <button type="submit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  ">Add
@@ -27,6 +28,9 @@
                                     </th>
                                     <th scope="col" class="text-center px-4 py-3">
                                         Gambar
+                                    </th>
+                                    <th scope="col" class="text-center px-4 py-3">
+                                        QR CODE
                                     </th>
                                     <th scope="col" class="px-4 py-3">
                                         Nama Produk
@@ -53,10 +57,18 @@
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
                                             {{ $index + 1 }}
                                         </td>
+
                                         <td scope="row"
                                             class="flex justify-center items-center px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
                                             <img class="w-16  aspect-square object-cover"
                                                 src="{{ asset('img/product/' . $item->image) }}" alt="">
+                                        </td>
+
+
+                                        <td scope="row"
+                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
+                                            <img class="w-16 mx-auto"
+                                                src="{{ asset('img/qrcodes/' . $item->qrcode_file) }}" alt="">
                                         </td>
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
@@ -66,7 +78,6 @@
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
                                             {{ $item->category->name }}
                                         </td>
-
                                         <td scope="row"
                                             class= "text-center px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
                                             {{ $item->stock }}
