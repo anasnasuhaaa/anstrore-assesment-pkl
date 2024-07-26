@@ -8,7 +8,7 @@
 </p>
 
 ## About Project
-anstrore menurpakan sebuah project semacam website e-commerce yang dikembangkan secara individu selama 7 hari oleh Anas Nasuha, project ini merupakan assesment yang diberikan oleh seorang IT Project Manager di sebuah perusahaan IT untuk menguji sejauh mana kemampuan sang Developer sebelum memasuki dunia Magang.
+anstrore merupakan sebuah project semacam website e-commerce yang dikembangkan secara individu selama 7 hari oleh Anas Nasuha, project ini merupakan assesment yang diberikan oleh seorang IT Project Manager di sebuah perusahaan IT untuk menguji sejauh mana kemampuan sang Developer sebelum memasuki dunia Magang.
 
 ### Features
 - Authentication & Authorization
