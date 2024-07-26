@@ -11,14 +11,13 @@
                 <div class="p-6  text-gray-900">
                     <div class=" max-w-xl mx-auto shadow-md flex justify-start flex-col md:flex-row">
                         <img class="object-cover w-full rounded-t-lg h-64 md:h-auto md:w-80 md:rounded-none md:rounded-s-lg"
-                            src="{{ asset('img/' . $product->image) }}" alt="">
+                            src="{{ asset('img/product/' . $product->image) }}" alt="">
                         <div class="flex flex-col justify-between p-4  leading-normal">
                             <h5 class="mb-2 text-xl bg-blue-300 p-2 rounded-md font-bold tracking-tight text-gray-900 ">
                                 {{ $product->category->name }}</h5>
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{ $product->name }}</h5>
                             <p class="mb-3 font-normal text-gray-700">{{ $product->description }}</p>
                             <div class="flex justify-between">
-
                                 <p class="mb-3 font-normal text-gray-700">{{ $product->price }}</p>
                                 <p class="mb-3 font-normal text-gray-700">{{ $product->stock }}</p>
                             </div>

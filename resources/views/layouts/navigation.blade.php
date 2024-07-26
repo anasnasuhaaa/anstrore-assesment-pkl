@@ -17,10 +17,13 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.category') : route('/')" :active="request()->routeIs('admin.category')">
-                        {{ __('Category') }}
+                        {{ __('Categories') }}
                     </x-nav-link>
                     <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('product.index') : route('/')" :active="request()->routeIs('product.index')">
-                        {{ __('Product') }}
+                        {{ __('Products') }}
+                    </x-nav-link>
+                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('payment.index') : route('/')" :active="request()->routeIs('payment.index')">
+                        {{ __('Payment') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -82,15 +85,19 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.dashboard') : route('/')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.category') : route('/')" :active="request()->routeIs('admin.category')">
+                {{ __('Categories') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('product.index') : route('/')" :active="request()->routeIs('product.index')">
+                {{ __('Products') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('payment.index') : route('/')" :active="request()->routeIs('payment.index')">
+                {{ __('Payment Method') }}
+            </x-responsive-nav-link>
+
         </div>
 
         <!-- Responsive Settings Options -->

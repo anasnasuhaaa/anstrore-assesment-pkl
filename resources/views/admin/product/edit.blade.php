@@ -1,18 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Produk') }}
+            {{ __('Category') }}
         </h2>
     </x-slot>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-md sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form enctype="multipart/form-data" class="mx-auto" method="POST"
-                        action="/admin/product/{{ $product->id }}">
-                        @csrf
+                    <form class="mx-auto" action="{{ route('product.update', $product->id) }}"
+                        enctype="multipart/form-data" method="POST">
                         @method('put')
-                        <input type="hidden" name="id" value="{{ $product->id }}">
+                        @csrf
                         <div class="mb-5">
                             <label class="block mb-2 text-sm font-medium text-gray-900 ">Nama Produk</label>
                             <input type="text" name="name" value="{{ $product->name }}"
@@ -25,12 +25,9 @@
                             <label class="block mb-2 text-sm font-medium text-gray-900 ">Kategori</label>
                             <select name="category_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                                <option value="" selected disabled>--Pilih Kategori--</option>
                                 @foreach ($category as $item)
-                                    @if ($item->id === $product->genre_id)
-                                        <option value="{{ $item->id }}" selected>{{ $item->name }}</option>
-                                    @else
-                                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endif
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -42,13 +39,15 @@
                             <input type="file" name="image"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                         </div>
-
+                        @error('image')
+                            <div class="alert text-red-500 alert-danger">{{ $message }}</div>
+                        @enderror
                         <div class="mb-5">
                             <label class="block mb-2 text-sm font-medium text-gray-900 ">Deskripsi</label>
                             <textarea name="description" rows="5"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                                 {{ $product->description }}
-                      </textarea>
+                        </textarea>
                         </div>
                         @error('description')
                             <div class="alert text-red-500 alert-danger">{{ $message }}</div>
@@ -59,7 +58,7 @@
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                         </div>
                         @error('price')
-                            <div class="alert text-red-500 alert-dang`er">{{ $message }}</div>
+                            <div class="alert text-red-500 alert-danger">{{ $message }}</div>
                         @enderror
                         <div class="mb-5">
                             <label class="block mb-2 text-sm font-medium text-gray-900 ">Stok</label>

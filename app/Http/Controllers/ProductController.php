@@ -36,39 +36,31 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                "name" => 'required',
-                "category_id" => 'required',
-                "description" => 'required',
-                "price" => 'required',
-                "stock" => 'required',
-                "image" => 'required|image|mimes:jpg,png,jpeg'
-            ]);
+        $request->validate([
+            "name" => 'required',
+            "category_id" => 'required',
+            "description" => 'required',
+            "price" => 'required',
+            "stock" => 'required',
+            "image" => 'required|image|mimes:jpg,png,jpeg'
+        ]);
 
-            Log::info('Validation passed');
 
-            $filename = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('img'), $filename);
+        $filename = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('img/product'), $filename);
 
-            Log::info('Image uploaded successfully: ' . $filename);
 
-            $product = new Product();
-            $product->name = $request->input('name');
-            $product->category_id = $request->input('category_id');
-            $product->description = $request->input('description');
-            $product->price = $request->input('price');
-            $product->stock = $request->input('stock');
-            $product->image = $filename;
-            $product->save();
+        $product = new Product();
+        $product->name = $request->input('name');
+        $product->category_id = $request->input('category_id');
+        $product->description = $request->input('description');
+        $product->price = $request->input('price');
+        $product->stock = $request->input('stock');
+        $product->image = $filename;
+        $product->save();
 
-            Log::info('Product saved successfully');
 
-            return redirect()->route('product.index')->with('success', 'Product created successfully!');
-        } catch (\Exception $e) {
-            Log::error('Error occurred: ' . $e->getMessage());
-            return redirect()->back()->withErrors('An error occurred while creating the product. Please try again.');
-        }
+        return redirect()->route('product.index')->with('success', 'Product created successfully!');
     }
     /**
      * Display the specified resource.
@@ -107,12 +99,13 @@ class ProductController extends Controller
 
         $product = Product::find($id);
         if ($request->has('image')) {
-            $path = 'img/';
+            $path = 'img/product/';
 
             File::delete($path . $product->image);
             $filename = time() . '.' . $request->image->extension();
-            $request->image->move(public_path('img'), $filename);
+            $request->image->move(public_path('img/product'), $filename);
             $product->image = $filename;
+            $product->save();
         };
 
         $product->name = $request->name;
@@ -132,7 +125,7 @@ class ProductController extends Controller
         //
         $product = Product::find($id);
 
-        $path = 'img/';
+        $path = 'img/product/';
         File::delete($path . $product->image);
 
         $product->delete();

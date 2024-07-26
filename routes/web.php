@@ -3,17 +3,20 @@
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $product = Product::all();
+    return view('welcome', ['product' => $product]);
 });
-
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,4 +38,11 @@ Route::middleware(['auth', 'adminMiddleware'])->group(function () {
 
     // Product Route
     Route::resource('admin/product', ProductController::class);
+
+    // Payment Route
+    Route::resource('admin/payment', PaymentController::class);
+});
+
+Route::middleware(['auth', 'userMiddleware'])->group(function () {
+    Route::get('/user/profile', [ProfileController::class, 'userEdit'])->name('profile.useredit');
 });
