@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserProductController;
@@ -46,6 +47,7 @@ Route::middleware(['auth', 'adminMiddleware'])->group(function () {
 
 Route::middleware(['auth', 'userMiddleware'])->group(function () {
     Route::get('/user/profile', [ProfileController::class, 'userEdit'])->name('profile.useredit');
+    Route::get('/user/product/{id}/checkout', [CheckoutController::class, 'index'])->name('checkout');
 });
 // Product Route
 Route::get('/product/{id}', [UserProductController::class, 'show'])->name('product.detail');

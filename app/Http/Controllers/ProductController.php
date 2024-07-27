@@ -77,7 +77,7 @@ class ProductController extends Controller
         // Simpan QR code ke file
         File::put($path . '/' . $qr_filename, $qr);
 
-        return redirect()->route('product.index')->with('success', 'Product created successfully!');
+        return redirect()->route('product.index')->with('success-added', 'Produk berhasil ditambahkan');
     }
     /**
      * Display the specified resource.
@@ -133,7 +133,7 @@ class ProductController extends Controller
         $product->stock = $request->stock;
         $product->save();
 
-        return redirect()->route('product.index');
+        return redirect()->route('product.index')->with('success-updated', 'Produk berhasil diupdate');
     }
     /**
      * Remove the specified resource from storage.
@@ -150,6 +150,6 @@ class ProductController extends Controller
         File::delete($qr_path . $product->qrcode_file);
 
         $product->delete();
-        return redirect(route('product.index'));
+        return redirect(route('product.index'))->with('success-deleted', 'Produk berhasil dihapus');
     }
 }

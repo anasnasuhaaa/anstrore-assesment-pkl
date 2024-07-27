@@ -11,9 +11,10 @@
                 </a>
                 <div>
 
-                    <button type="button"
+                    <a href="{{ route('checkout', $product->id) }}" type="submit"
                         class="text-white bg-blue-950 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Beli
-                        Sekarang</button>
+                        Sekarang</a>
+
                 </div>
             </div>
 

@@ -48,7 +48,7 @@ class PaymentController extends Controller
             $payment->name = $request->name;
             $payment->save();
 
-            return redirect()->route('payment.index')->with('success', 'Payment Added Successfully');
+            return redirect()->route('payment.index')->with('success->added', "$payment->name berhasil ditabmahkan");
         } catch (Throwable $caugh) {
             dd($caugh);
         }
@@ -98,7 +98,7 @@ class PaymentController extends Controller
             }
             $payment->name = $request->name;
             $payment->save();
-            return redirect()->route('payment.index')->with('success', 'Payment Updated Successfully');
+            return redirect()->route('payment.index')->with('success-updated', 'Payment Berhasil diupdate');
         } catch (Throwable $caugh) {
             dd($caugh);
             return redirect()->back()->with('error', 'Something went wrong');
@@ -117,7 +117,7 @@ class PaymentController extends Controller
                 unlink(public_path('img/payment/' . $payment->image));
             }
             $payment->delete();
-            return redirect()->route('payment.index')->with('success', 'Payment Deleted Successfully');
+            return redirect()->route('payment.index')->with('success-deleted', "$payment->name berhasil dihapus");
         } catch (Throwable $caugh) {
             dd($caugh);
             return redirect()->back()->with('error', 'Something went wrong');

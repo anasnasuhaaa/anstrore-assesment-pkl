@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Category;
-use File;
-use PhpParser\Node\Stmt\Catch_;
 use Throwable;
+use App\Models\Category;
+use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Catch_;
+use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
 {
@@ -39,7 +39,7 @@ class CategoryController extends Controller
             $category->image = $filename;
             $category->save();
 
-            return redirect(route('admin.category'));
+            return redirect(route('admin.category'))->with('success-added', "Berhasil Menambahkan $category->name");
         } catch (Throwable $caught) {
             dd($caught);
         }
@@ -72,7 +72,7 @@ class CategoryController extends Controller
         }
         $category->name = $request->category;
         $category->save();
-        return redirect(route('admin.category'));
+        return redirect(route('admin.category'))->with('success-updated', 'Kategori berhasil diupdate');
     }
 
     public function destroy(string $id)
@@ -81,6 +81,6 @@ class CategoryController extends Controller
         $path = "img/category/";
         File::delete($path . $category->image);
         $category->delete();
-        return redirect(route('admin.category'));
+        return redirect(route('admin.category'))->with('success-deleted', "$category->name berhasil dihapus");;
     }
 }

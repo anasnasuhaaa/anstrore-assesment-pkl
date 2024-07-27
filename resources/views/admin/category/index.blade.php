@@ -58,12 +58,15 @@
                                                 <a href="/admin/category/{{ $value->id }}/edit"
                                                     class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2  ">Edit</a>
 
-                                                <form method="POST" action="/admin/category/{{ $value->id }}">
+                                                <button onclick="confirmDeletion({{ $value->id }})"
+                                                    class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2">
+                                                    Delete
+                                                </button>
+                                                <form id="delete-form-{{ $value->id }}"
+                                                    action="/admin/category/{{ $value->id }}" method="POST"
+                                                    style="display: none;">
                                                     @csrf
                                                     @method('delete')
-                                                    <button type="submit"
-                                                        class="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 ">
-                                                        Delete</button>
                                                 </form>
                                             </div>
                                         </td>
@@ -80,4 +83,56 @@
             </div>
         </div>
     </div>
+
+    @if (Session::has('success-added'))
+        <script>
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "{{ Session::get('success-added') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    @endif
+    @if (Session::has('success-updated'))
+        <script>
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "{{ Session::get('success-updated') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    @endif
+    @if (Session::has('success-deleted'))
+        <script>
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "{{ Session::get('success-deleted') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    @endif
+    <script>
+        function confirmDeletion(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Anda tidak akan bisa mengembalikan data ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            });
+        }
+    </script>
 </x-app-layout>
