@@ -20,7 +20,6 @@ anstrore merupakan sebuah project website e-commerce yang dikembangkan secara in
 ### Tech Stack
 - #### Laravel 11
 - #### MySQL 
-- #### Breeze
 - #### Tailwind CSS
 - #### Alpine.Js
 
