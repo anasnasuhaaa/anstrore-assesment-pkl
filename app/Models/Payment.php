@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\OrderDetail;
+use App\Models\OrderDetails;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +16,6 @@ class Payment extends Model
 
     public function order_detail(): HasMany
     {
-        return $this->hasMany(OrderDetail::class, 'payment_id');
+        return $this->hasMany(OrderDetails::class, 'payment_id');
     }
 }

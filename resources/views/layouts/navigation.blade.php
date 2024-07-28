@@ -25,6 +25,9 @@
                     <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('payment.index') : route('/')" :active="request()->routeIs('payment.index')">
                         {{ __('Payment') }}
                     </x-nav-link>
+                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.orderlist.index') : route('/')" :active="request()->routeIs('admin.orderlist.index')">
+                        {{ __('Order List') }}
+                    </x-nav-link>
                 </div>
             </div>
 

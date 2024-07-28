@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Models\Category;
-use App\Models\OrderDetail;
+use App\Models\OrderDetails;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
@@ -20,6 +20,6 @@ class Product extends Model
     }
     public function order_detail(): HasOne
     {
-        return $this->hasOne(OrderDetail::class, 'product_id');
+        return $this->hasOne(OrderDetails::class, 'product_id');
     }
 }

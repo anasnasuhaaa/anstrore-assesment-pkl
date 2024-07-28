@@ -10,10 +10,10 @@
                     <div class="ml-10 flex items-baseline space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <x-user-nav-link href="/" :active="request()->is('/')">Home</x-user-nav-link>
-                        <x-user-nav-link href="/posts" :active="request()->is('posts')">Blog</x-user-nav-link>
+                        <x-user-nav-link href="/user/orderlist" :active="request()->is('user/orderlist')">Order</x-user-nav-link>
+                        <x-user-nav-link href="/posts" :active="request()->is('posts')">History</x-user-nav-link>
                         <x-user-nav-link href="/about" :active="request()->is('about')">About</x-user-nav-link>
                         <x-user-nav-link href="/contact" :active="request()->is('contact')">Contact</x-user-nav-link>
-
                     </div>
                 </div>
             </div>

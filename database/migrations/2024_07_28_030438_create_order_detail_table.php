@@ -15,15 +15,16 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('order_status_id');
             $table->unsignedBigInteger('payment_id');
-            $table->integer('quantity');
+            $table->string('address');
+            $table->string('phone');
+            $table->integer('qty');
             $table->bigInteger('price');
+            $table->string('order_status')->default('pending');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('produk');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('order_status_id')->references('id')->on('order_status');
             $table->foreign('payment_id')->references('id')->on('payments');
         });
     }
