@@ -43,5 +43,7 @@ class CheckoutController extends Controller
         $product = Product::find($id);
         $product->stock -= $request->qty;
         $order_detail->save();
+
+        return redirect(route('user.orderlist.index'));
     }
 }

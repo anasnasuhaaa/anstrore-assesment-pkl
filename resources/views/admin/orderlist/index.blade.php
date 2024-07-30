@@ -4,15 +4,17 @@
             <h2 class="font-semibold leading-10 text-xl text-gray-800">
                 {{ __('Manage Order List') }}
             </h2>
+
             <a href="{{ route('download.excel') }}"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Download
-                Excel</a>
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                <i class="fa-regular fa-file-excel"></i> Download Excel</a>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            {{ $order_details->links() }}
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-2">
                 <div class="p-6 text-gray-900">
                     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -23,19 +25,19 @@
                                         No
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        User
+                                        Email
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Product Name
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        Category
+                                        Date
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3 mx-auto text-center">
                                         Order Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Order Status
+                                    <th scope="col" class="px-6 py-3 text-center">
+                                        Detail
                                     </th>
                                 </tr>
                             </thead>
@@ -46,43 +48,44 @@
                                             class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                                             {{ ++$i }}
                                         </th>
-                                        <td class="px-6 py-4">
-                                            {{ $item->user->name }}
-                                        </td>
-                                        <td class="px-6 py-4">
+                                        <td class="px-6 py-4 text-gray-700">
                                             {{ $item->user->email }}
                                         </td>
+                                        <td class="px-6 py-4 text-gray-700   ">
+                                            {{ Str::limit($item->product->name, 10, '...') }}
+                                        </td>
 
-                                        <td class="px-6 py-4">
-                                            $2999
+                                        <td class="px-6 py-4 text-gray-700">
+                                            {{ $item->created_at->format('d-m-Y H:i') }}
                                         </td>
                                         @if ($item->order_status == 'pending')
-                                            <td class="px-6 py-4 ">
+                                            <td class="px-6 py-4rtext-gray-700">
                                                 <p
-                                                    class="rounded-md border-2 w-fit p-2  text-center border-yellow-500 text-yellow-500">
+                                                    class="rounded-md border-2 w-fit py-1 mx-auto px-2  text-center border-yellow-500 text-yellow-500">
                                                     {{ $item->order_status }}
                                                 </p>
                                             </td>
                                         @endif
                                         @if ($item->order_status == 'dikirim')
-                                            <td class="px-6 py-4 ">
+                                            <td class="px-6 py-4rtext-gray-700">
                                                 <p
-                                                    class="rounded-md border-2 w-fit p-2  text-center border-red-500 text-white">
+                                                    class="rounded-md border-2 w-fit py-1 mx-auto px-2  text-center border-blue-500 text-blue-500">
                                                     {{ $item->order_status }}
                                                 </p>
                                             </td>
                                         @endif
-                                        @if ($item->order_status == 'dikirim')
-                                            <td class="px-6 py-4 ">
+                                        @if ($item->order_status == 'diterima')
+                                            <td class="px-6 py-4rtext-gray-700">
                                                 <p
-                                                    class="rounded-md border-2 w-fit p-2  text-center border-green-500 text-green-500">
+                                                    class="rounded-md border-2 w-fit py-1 mx-auto px-2  text-center border-green-500 text-green-500">
                                                     {{ $item->order_status }}
                                                 </p>
                                             </td>
                                         @endif
-                                        <td class="px-6 py-4">
+
+                                        <td class="px-6 py-4 text-center">
                                             <a href="{{ route('admin.orderlist.show', $item->id) }}"
-                                                class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                                                class="mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ">Detail</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -95,5 +98,6 @@
             </div>
         </div>
     </div>
+
 
 </x-app-layout>

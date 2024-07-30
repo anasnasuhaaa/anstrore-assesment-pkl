@@ -75,17 +75,7 @@
             });
         </script>
     @endif
-    @if (Session::has('success-updated'))
-        <script>
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "{{ Session::get('success-updated') }}",
-                showConfirmButton: false,
-                timer: 1500
-            });
-        </script>
-    @endif
+
     @if (Session::has('success-deleted'))
         <script>
             Swal.fire({
@@ -97,7 +87,6 @@
             });
         </script>
     @endif
-
     <script>
         function confirmDeletion(id) {
             Swal.fire({

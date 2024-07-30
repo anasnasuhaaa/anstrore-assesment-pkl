@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use BaconQrCode\Encoder\QrCode;
 use PhpParser\Node\Expr\Cast\String_;
@@ -15,7 +16,9 @@ class UserProductController extends Controller
     {
 
         $product = Product::find($id);
-        return view('pages.detail', ['product' => $product]);
+
+        $review = Review::where('product_id', $id)->get();
+        return view('pages.detail', compact('product', 'review'));
     }
     public function checkout(Request $request, string $id)
     {

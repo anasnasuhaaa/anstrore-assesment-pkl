@@ -2,7 +2,8 @@
 @section('content')
     <div class="flex flex-col md:flex-row p-6 bg-white shadow-sm">
         <img class="object-contain w-96 aspect-square" src="{{ asset('img/product/' . $product->image) }}" alt="">
-        <form class="min-w-md mx-auto" action="{{ route('checkout.store', $product->id) }}" method="POST">
+        <form class="min-w-md mx-auto" action="{{ route('checkout.store', $product->id) }}" method="POST"
+            id="confirm-form-{{ $product->id }}">
             @csrf
             <div class="relative z-0 w-96 mb-5 group">
                 <input type="text" name="address"
@@ -34,13 +35,36 @@
             <input type="hidden" name="qty" value="{{ $qty }}">
             <input type="hidden" name="total" value="{{ $total }}">
             <div>
-                <h1>Harga: {{ $price }}</h1>
+                <h1>Harga: Rp{{ number_format($price, 0, ',', '.') }}</h1>
                 <h1>Kuantiti: {{ $qty }}</h1>
-                <h1>Total: {{ $total }}</h1>
+                <h1 class="text-xl font-semibold text-red-600">Total: {{ number_format($total, 0, ',', '.') }}</h1>
             </div>
 
-            <button type="submit"
+            <button type="button" onclick="confirmCheckout({{ $product->id }})"
                 class="text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full  px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Pesan</button>
         </form>
     </div>
+    <script>
+        function confirmCheckout(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Akan memesan produk ini",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: "Pesanan telah dipesan",
+                        icon: "success"
+                    });
+                    document.getElementById('confirm-form-' + id).submit();
+                }
+            });
+        }
+    </script>
 @endsection

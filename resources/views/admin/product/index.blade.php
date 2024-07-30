@@ -9,13 +9,17 @@
                 <button type="submit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  ">Add
                     New Product</button>
+                <a href="{{ route('product.excel') }}"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">
+                    <i class="fa-regular fa-file-excel"></i> Download Excel</a>
             </form>
         </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            {{ $product->links() }}
+            <div class="bg-white mt-2 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
 
@@ -43,7 +47,10 @@
                                         Stok
                                     </th>
                                     <th scope="col" class="px-4 py-3">
-                                        Harga Satuan
+                                        Harga
+                                    </th>
+                                    <th scope="col" class="px-4 py-3">
+                                        Date
                                     </th>
                                     <th scope="col" class="px-4 py-3 text-center">
                                         Aksi
@@ -60,19 +67,19 @@
 
                                         <td scope="row"
                                             class="flex justify-center items-center px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
-                                            <img class="w-16  aspect-square object-cover"
+                                            <img class="w-10  aspect-square object-cover"
                                                 src="{{ asset('img/product/' . $item->image) }}" alt="">
                                         </td>
 
 
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
-                                            <img class="w-16 mx-auto"
+                                            <img class="w-10 mx-auto"
                                                 src="{{ asset('img/qrcodes/' . $item->qrcode_file) }}" alt="">
                                         </td>
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
-                                            {{ $item->name }}
+                                            {{ Str::limit($item->name, 10, '...') }}
                                         </td>
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
@@ -85,6 +92,10 @@
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
                                             {{ number_format($item->price, 0, ',', '.') }}
+                                        </td>
+                                        <td scope="row"
+                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
+                                            {{ $item->created_at->format('d-m-Y H:i') }}
                                         </td>
                                         <td class="px-4 py-3">
                                             <div class="flex justify-center items-center">
@@ -128,17 +139,7 @@
             });
         </script>
     @endif
-    @if (Session::has('success-updated'))
-        <script>
-            Swal.fire({
-                position: "top-end",
-                icon: "success",
-                title: "{{ Session::get('success-updated') }}",
-                showConfirmButton: false,
-                timer: 1500
-            });
-        </script>
-    @endif
+
     @if (Session::has('success-deleted'))
         <script>
             Swal.fire({

@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form enctype="multipart/form-data" class="mx-auto" method="POST"
+                    <form enctype="multipart/form-data" class="mx-auto" method="POST" id="update-form-{{ $payment->id }}"
                         action="{{ route('payment.update', $payment->id) }}">
                         @csrf
                         @method('put')
@@ -33,11 +33,35 @@
                             <div class="alert text-red-500 alert-danger">{{ $message }}</div>
                         @enderror
 
-                        <button type="submit"
+                        <button type="button" onclick="confirmUpdate({{ $payment->id }})"
                             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function confirmUpdate(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Untuk melakukan update pada data ini",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, update!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Updated!",
+                        text: "Your file has been deleted.",
+                        showConfirmButton: false,
+                        icon: "success"
+                    });
+                    document.getElementById('update-form-' + id).submit();
+                }
+            });
+        }
+    </script>
 </x-app-layout>
