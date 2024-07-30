@@ -48,7 +48,7 @@ class PaymentController extends Controller
             $payment->name = $request->name;
             $payment->save();
 
-            return redirect()->route('payment.index')->with('success->added', "$payment->name berhasil ditabmahkan");
+            return redirect()->route('payment.index')->with('success-added', "$payment->name berhasil ditambahkan");
         } catch (Throwable $caugh) {
             dd($caugh);
         }

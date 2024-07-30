@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('admin.dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
@@ -24,6 +24,9 @@
                     </x-nav-link>
                     <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('payment.index') : route('/')" :active="request()->routeIs('payment.index')">
                         {{ __('Payment') }}
+                    </x-nav-link>
+                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.orderlist.index') : route('/')" :active="request()->routeIs('admin.orderlist.index')">
+                        {{ __('Order List') }}
                     </x-nav-link>
                 </div>
             </div>

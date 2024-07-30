@@ -19,6 +19,6 @@ class UserMiddleware
         if (Auth::user()->usertype == 'user') {
             return $next($request);
         }
-        return redirect()->back();
+        return redirect()->back()->with('notuser-message', 'Anda bukan pengguna, silakan login ke akun pengguna');
     }
 }

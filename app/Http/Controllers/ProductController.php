@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\File;
+use App\Exports\ProductExport;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Number;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
+use Maatwebsite\Excel\Facades\Excel;
+use SimpleSoftwareIO\QrCode\Generator;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use SimpleSoftwareIO\QrCode\Generator;
 
 class ProductController extends Controller
 {
@@ -23,7 +25,7 @@ class ProductController extends Controller
 
 
 
-        $products = Product::all();
+        $products = Product::orderBy('created_at', 'desc')->paginate(5);
 
         return view('admin.product.index', ['product' => $products]);
     }
@@ -151,5 +153,9 @@ class ProductController extends Controller
 
         $product->delete();
         return redirect(route('product.index'))->with('success-deleted', 'Produk berhasil dihapus');
+    }
+    public function export()
+    {
+        return Excel::download(new ProductExport, 'product.xlsx');
     }
 }

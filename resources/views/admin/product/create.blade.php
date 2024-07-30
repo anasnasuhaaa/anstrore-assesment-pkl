@@ -34,8 +34,10 @@
                             <div class="alert text-red-500 alert-danger">{{ $message }}</div>
                         @enderror
                         <div class="mb-5">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 ">Nama Produk</label>
-                            <input type="file" name="image"
+                            <label class="block mb-2 text-sm font-medium text-gray-900 ">Gambar Produk</label>
+                            <input
+                                class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50  focus:outline-none p-2.5"
+                                type="file" name="image"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
                         </div>
                         @error('image')
@@ -44,7 +46,7 @@
                         <div class="mb-5">
                             <label class="block mb-2 text-sm font-medium text-gray-900 ">Deskripsi</label>
                             <textarea name="description" rows="5"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                         </textarea>
                         </div>
                         @error('description')
