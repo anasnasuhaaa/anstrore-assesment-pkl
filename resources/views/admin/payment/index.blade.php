@@ -4,7 +4,7 @@
             <h2 class="font-semibold leading-10 text-xl text-gray-800">
                 {{ __('Manage Payment Method') }}
             </h2>
-            <form method="GET" action="{{ route('payment.create') }}">
+            <form method="GET" action="{{ route('admin.payment.create') }}">
                 <button type="submit"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5">Add
                     New +</button>
@@ -41,15 +41,15 @@
                                         </td>
                                         <td class="px-4 py-4">
                                             <div class="flex justify-center items-center">
-                                                <a href="{{ route('payment.edit', $item->id) }}"
+                                                <a href="{{ route('admin.payment.edit', $item->id) }}"
                                                     class="text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2">Edit</a>
                                                 <button onclick="confirmDeletion({{ $item->id }})"
                                                     class="text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2">
                                                     Delete
                                                 </button>
                                                 <form id="delete-form-{{ $item->id }}"
-                                                    action="{{ route('payment.destroy', $item->id) }}" method="POST"
-                                                    style="display: none;">
+                                                    action="{{ route('admin.payment.destroy', $item->id) }}"
+                                                    method="POST" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>

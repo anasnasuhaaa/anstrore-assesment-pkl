@@ -6,8 +6,6 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Review;
 use Illuminate\Http\Request;
-use BaconQrCode\Encoder\QrCode;
-use PhpParser\Node\Expr\Cast\String_;
 
 class UserProductController extends Controller
 {
@@ -17,7 +15,7 @@ class UserProductController extends Controller
 
         $product = Product::find($id);
 
-        $review = Review::where('product_id', $id)->get();
+        $review = Review::where('product_id', $id)->orderBy('created_at', 'desc')->get();
         return view('pages.detail', compact('product', 'review'));
     }
     public function checkout(Request $request, string $id)

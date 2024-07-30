@@ -23,8 +23,6 @@ class ProductController extends Controller
     {
         //
 
-
-
         $products = Product::orderBy('created_at', 'desc')->paginate(5);
 
         return view('admin.product.index', ['product' => $products]);
@@ -79,7 +77,7 @@ class ProductController extends Controller
         // Simpan QR code ke file
         File::put($path . '/' . $qr_filename, $qr);
 
-        return redirect()->route('product.index')->with('success-added', 'Produk berhasil ditambahkan');
+        return redirect()->route('admin.product.index')->with('success-added', 'Produk berhasil ditambahkan');
     }
     /**
      * Display the specified resource.
@@ -156,6 +154,6 @@ class ProductController extends Controller
     }
     public function export()
     {
-        return Excel::download(new ProductExport, 'product.xlsx');
+        return Excel::download(new ProductExport, 'products.xlsx');
     }
 }

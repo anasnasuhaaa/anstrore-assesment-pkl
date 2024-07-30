@@ -66,7 +66,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <form method="POST" action="{{ route('order.arrived', $order_details->id) }}"
+                            <form method="POST" action=" user/orderlist/{{ $order_details->id }}"
                                 id="confirm-form-{{ $order_details->id }}">
                                 @csrf
                                 @if ($order_details->order_status == 'diterima')

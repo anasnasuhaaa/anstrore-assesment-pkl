@@ -17,23 +17,17 @@ use App\Http\Controllers\OrderArrivedController;
 
 Route::get('/', function () {
     $products = Product::all()->map(function ($product) {
-        if ($product->averageRating()) {
-            $product->average_rating = number_format($product->averageRating(), 1, '.', '.');
-        } else {
-            $product->average_rating = number_format(0, 1, '.', '.');
-        }
+        $product->average_rating = number_format($product->averageRating() ?? 0, 1, '.', '.');
         return $product;
     });
     $categories = Category::all();
 
-
-
     return view('welcome', compact('products', 'categories'));
 });
+
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,48 +37,69 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::middleware(['auth', 'adminMiddleware'])->group(function () {
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    // Cateroty Route
-    Route::get('/admin/category', [CategoryController::class, 'index'])->name('admin.category');
-    Route::post('/admin/category', [CategoryController::class, 'store'])->name('admin.category.store');
-    Route::get('/admin/category/create', [CategoryController::class, 'create'])->name('admin.category.create');
-    Route::get('/admin/category/{id}/edit', [CategoryController::class, 'edit'])->name('admin.category.edit');
-    Route::put('/admin/category/{id}', [CategoryController::class, 'update'])->name('admin.category.update');
-    Route::delete('/admin/category/{id}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
+// Admin routes
+Route::prefix('admin')->middleware(['auth', 'adminMiddleware'])->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
-    // Product Route
-    Route::resource('admin/product', ProductController::class);
+    // Category Routes
+    Route::get('/category', [CategoryController::class, 'index'])->name('admin.category');
+    Route::post('/category', [CategoryController::class, 'store'])->name('admin.category.store');
+    Route::get('/category/create', [CategoryController::class, 'create'])->name('admin.category.create');
+    Route::get('/category/{id}/edit', [CategoryController::class, 'edit'])->name('admin.category.edit');
+    Route::put('/category/{id}', [CategoryController::class, 'update'])->name('admin.category.update');
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('admin.category.destroy');
 
-    // Payment Route
-    Route::resource('admin/payment', PaymentController::class);
+    // Product Routes
+    Route::resource('product', ProductController::class)->names([
+        'index' => 'admin.product.index',
+        'create' => 'admin.product.create',
+        'store' => 'admin.product.store',
+        'show' => 'admin.product.show',
+        'edit' => 'admin.product.edit',
+        'update' => 'admin.product.update',
+        'destroy' => 'admin.product.destroy',
+    ]);
 
-    // Order List Route
-    Route::get('/admin/orderlist', [OrderListController::class, 'index'])->name('admin.orderlist.index');
-    Route::get('/admin/orderlist/{id}', [OrderListController::class, 'show'])->name('admin.orderlist.show');
-    Route::post('/admin/orderlist/{id}', [OrderListController::class, 'approve'])->name('admin.orderlist.approve');
-    // Export Excel
+    // Payment Routes
+    Route::resource('payment', PaymentController::class)->names([
+        'index' => 'admin.payment.index',
+        'create' => 'admin.payment.create',
+        'store' => 'admin.payment.store',
+        'show' => 'admin.payment.show',
+        'edit' => 'admin.payment.edit',
+        'update' => 'admin.payment.update',
+        'destroy' => 'admin.payment.destroy',
+    ]);
+
+    // Order List Routes
+    Route::get('/orderlist', [OrderListController::class, 'index'])->name('admin.orderlist.index');
+    Route::get('/orderlist/{id}', [OrderListController::class, 'show'])->name('admin.orderlist.show');
+    Route::post('/orderlist/{id}', [OrderListController::class, 'approve'])->name('admin.orderlist.approve');
+
+    // Export Routes
     Route::get('/export/orderlist', [OrderListController::class, 'export'])->name('download.excel');
     Route::get('/export/product', [ProductController::class, 'export'])->name('product.excel');
 });
 
-Route::middleware(['auth', 'userMiddleware'])->group(function () {
-    Route::get('/user/profile', [ProfileController::class, 'userEdit'])->name('profile.useredit');
+// User routes
+Route::prefix('user')->middleware(['auth', 'userMiddleware'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'userEdit'])->name('profile.useredit');
 
-    Route::get('/user/orderlist', [OrderListController::class, 'userIndex'])->name('user.orderlist.index');
-    Route::get('/user/orderlist/{id}', [OrderlistShowController::class, 'show'])->name('user.orderlist.show');
-    // Route::post('/user/orderlist/{id}', [OrderArrivedController::class, 'store'])->name('order.arrived');
-    Route::post('/orderlist/{id}', [OrderArrivedController::class, 'store'])->name('order.arrived');
-    Route::get('/user/orderlist/{id}/review', [ReviewController::class, 'index'])->name('user.orderlist.review');
-    Route::post('/user/orderlist/{id}', [ReviewController::class, 'store'])->name('review.store');
+    // User Order List Routes
+    Route::get('/orderlist', [OrderListController::class, 'userIndex'])->name('user.orderlist.index');
+    Route::get('/orderlist/{id}', [OrderlistShowController::class, 'show'])->name('user.orderlist.show');
+    Route::post('/orderlist/{id}', [OrderArrivedController::class, 'store'])->name('user.order.arrived');
+    Route::get('/orderlist/{id}/review', [ReviewController::class, 'index'])->name('user.orderlist.review');
+    Route::post('/orderlist/{id}', [ReviewController::class, 'store'])->name('review.store');
 
+    // Checkout Routes
     Route::post('/product/{id}', [UserProductController::class, 'checkout'])->name('product.checkout');
-    Route::get('/user/product/{id}/checkout', [CheckoutController::class, 'index'])->name('checkout');
-    Route::post('/user/product/{id}/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/product/{id}/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/product/{id}/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 });
-// Product Route
+
+// Product Routes
 Route::get('/product/{id}', [UserProductController::class, 'show'])->name('product.detail');
 Route::get('/product/qr/{id}', [UserProductController::class, 'qr'])->name('qrcode.download');
-
 Route::get('/products', [UserProductController::class, 'all'])->name('products.index');
 Route::get('/products/filter/{category}', [UserProductController::class, 'filter'])->name('products.filter');

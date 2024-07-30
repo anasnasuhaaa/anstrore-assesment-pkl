@@ -19,10 +19,10 @@
                     <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.category') : route('/')" :active="request()->routeIs('admin.category')">
                         {{ __('Categories') }}
                     </x-nav-link>
-                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('product.index') : route('/')" :active="request()->routeIs('product.index')">
+                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.product.index') : route('/')" :active="request()->routeIs('admin.product.index')">
                         {{ __('Products') }}
                     </x-nav-link>
-                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('payment.index') : route('/')" :active="request()->routeIs('payment.index')">
+                    <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.payment.index') : route('/')" :active="request()->routeIs('admin.payment.index')">
                         {{ __('Payment') }}
                     </x-nav-link>
                     <x-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.orderlist.index') : route('/')" :active="request()->routeIs('admin.orderlist.index')">
@@ -94,10 +94,10 @@
             <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.category') : route('/')" :active="request()->routeIs('admin.category')">
                 {{ __('Categories') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('product.index') : route('/')" :active="request()->routeIs('product.index')">
+            <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.product.index') : route('/')" :active="request()->routeIs('admin.product.index')">
                 {{ __('Products') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('payment.index') : route('/')" :active="request()->routeIs('payment.index')">
+            <x-responsive-nav-link :href="Auth::user()->usertype == 'admin' ? route('admin.payment.index') : route('/')" :active="request()->routeIs('admin.payment.index')">
                 {{ __('Payment Method') }}
             </x-responsive-nav-link>
 

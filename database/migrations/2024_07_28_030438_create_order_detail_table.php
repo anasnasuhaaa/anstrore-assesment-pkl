@@ -23,9 +23,9 @@ return new class extends Migration
             $table->string('order_status')->default('pending');
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('produk');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('payment_id')->references('id')->on('payments');
+            $table->foreign('product_id')->references('id')->on('produk')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('payment_id')->references('id')->on('payments')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
