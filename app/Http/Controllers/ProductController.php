@@ -3,15 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ProductExport;
-use App\Models\Product;
-use App\Models\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Number;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Maatwebsite\Excel\Facades\Excel;
-use SimpleSoftwareIO\QrCode\Generator;
-use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class ProductController extends Controller
@@ -21,29 +17,35 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
 
-        $products = Product::orderBy('created_at', 'desc')->paginate(5);
 
-        return view('admin.product.index', ['product' => $products]);
+        $products = DB::table('produk')->orderBy('created_at', 'desc')
+            ->join('categories', 'categories.id', '=', 'produk.category_id')
+            ->select('produk.*', 'categories.name as category_name')
+            ->paginate(5);
+
+        foreach ($products as $product) {
+            $product->created_at = Carbon::parse($product->created_at);
+        }
+
+        return view('admin.product.index', compact('products'));
     }
 
-    /**
+    /** 
      * Show the form for creating a new resource.
      */
     public function create()
     {
         //
-        $category = Category::all()->sortBy('name');
-        return view('admin.product.create', ['category' => $category]);
+        $category = DB::table('categories')->orderBy('name', 'asc')->get();
+        return view('admin.product.create', compact('category'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request,)
+    public function store(Request $request)
     {
-        $product = new Product();
         $request->validate([
             "name" => 'required',
             "category_id" => 'required',
@@ -52,31 +54,33 @@ class ProductController extends Controller
             "stock" => 'required',
             "image" => 'required|image|mimes:jpg,png,jpeg'
         ]);
-        // image
+
+        // Image Filename and Save to public path
         $filename = time() . '.' . $request->image->extension();
         $request->image->move(public_path('img/product'), $filename);
 
+        // QR Code file name
         $qr_filename = time() . '.' . 'png';
 
+        $data = [
+            "name" => $request->input('name'),
+            "category_id" => $request->input('category_id'),
+            "description" => $request->input('description'),
+            "price" => $request->input('price'),
+            "stock" => $request->input('stock'),
+            "image" => $filename,
+            "qrcode_file" => $qr_filename,
+            "created_at" => now(),
+            "updated_at" => now()
+        ];
 
-        $product->name = $request->input('name');
-        $product->category_id = $request->input('category_id');
-        $product->description = $request->input('description');
-        $product->price = $request->input('price');
-        $product->stock = $request->input('stock');
-        $product->image = $filename;
-        $product->qrcode_file = $qr_filename;
-        $product->save();
-        // QR Code
-        $qr = QrCode::size(200)->format('png')->generate(url('product/' . $product->id),);
+        $productId = DB::table('produk')->insertGetId($data);
+
+        // QR Code generate
+        $qr = QrCode::size(200)->format('png')->generate(url('product/' . $productId));
         $path = public_path('img/qrcodes');
-        // Pastikan direktori ada
-        if (!File::exists($path)) {
-            File::makeDirectory($path, 0755, true);
-        }
         // Simpan QR code ke file
         File::put($path . '/' . $qr_filename, $qr);
-
         return redirect()->route('admin.product.index')->with('success-added', 'Produk berhasil ditambahkan');
     }
     /**
@@ -85,8 +89,11 @@ class ProductController extends Controller
     public function show(string $id)
     {
         //
-        $product = Product::find($id);
-        return view('admin.product.show', ['product' => $product]);
+        $product = DB::table('produk')->where('produk.id', $id)
+            ->join('categories', 'categories.id', '=', 'produk.category_id')
+            ->select('produk.*', 'categories.name as category_name')
+            ->first();
+        return view('admin.product.show', compact('product'));
     }
 
     /**
@@ -94,9 +101,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
-        $product = Product::find($id);
-        $category = Category::where('name', '!=', $product->category->name)->get();
+        $product = DB::table('produk')->where('id', $id)->first();
+        $category = DB::table('categories')->get();
         return view('admin.product.edit', ['product' => $product, 'category' => $category]);
     }
 
@@ -115,33 +121,39 @@ class ProductController extends Controller
             "image" => 'image|mimes:jpg,png,jpeg'
         ]);
 
-        $product = Product::find($id);
+        $product = DB::table('produk')->find($id);
+
+        $data = [
+            "name" => $request->input('name'),
+            "category_id" => $request->input('category_id'),
+            "description" => $request->input('description'),
+            "price" => $request->input('price'),
+            "stock" => $request->input('stock'),
+            "created_at" => now(),
+            "updated_at" => now()
+        ];
+
         if ($request->has('image')) {
             $path = 'img/product/';
-
             File::delete($path . $product->image);
             $filename = time() . '.' . $request->image->extension();
             $request->image->move(public_path('img/product'), $filename);
-            $product->image = $filename;
-            $product->save();
+            $data["image"] = $filename;
         };
 
-        $product->name = $request->name;
-        $product->category_id = $request->category_id;
-        $product->description = $request->description;
-        $product->price = $request->price;
-        $product->stock = $request->stock;
-        $product->save();
+        DB::table('produk')->where('id', $id)->update($data);
 
-        return redirect()->route('product.index')->with('success-updated', 'Produk berhasil diupdate');
+        return redirect()->route('admin.product.index')->with('success-updated', 'Produk berhasil diupdate');
     }
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
-        $product = Product::find($id);
+        DB::table('order_details')->where('product_id', $id)->delete();
+        DB::table('reviews')->where('product_id', $id)->delete();
+
+        $product = DB::table('produk')->find($id);
 
         // Remove Image file in Public path
         $img_path = 'img/product/';
@@ -149,8 +161,9 @@ class ProductController extends Controller
         $qr_path = 'img/qrcodes/';
         File::delete($qr_path . $product->qrcode_file);
 
-        $product->delete();
-        return redirect(route('product.index'))->with('success-deleted', 'Produk berhasil dihapus');
+        DB::table('produk')->where('id', $id)->delete();
+
+        return redirect(route('admin.product.index'))->with('success-deleted', 'Produk berhasil dihapus');
     }
     public function export()
     {

@@ -18,7 +18,7 @@
 
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            {{ $product->links() }}
+            {{ $products->links() }}
             <div class="bg-white mt-2 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
 
@@ -58,7 +58,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($product as $index => $item)
+                                @foreach ($products as $index => $item)
                                     <tr class="bg-white border-b ">
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
@@ -83,7 +83,7 @@
                                         </td>
                                         <td scope="row"
                                             class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">
-                                            {{ $item->category->name }}
+                                            {{ $item->category_name }}
                                         </td>
                                         <td scope="row"
                                             class= "text-center px-4 py-3 font-medium text-gray-900 whitespace-nowrap ">

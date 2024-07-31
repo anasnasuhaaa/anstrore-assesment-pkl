@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Throwable;
-use App\Models\Category;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Catch_;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class CategoryController extends Controller
@@ -14,7 +13,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $category = Category::all();
+        $category = DB::table('categories')->get();
         return view('admin.category.index', ['category' => $category]);
     }
     public function create()
@@ -24,7 +23,6 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         try {
-            $category = new Category();
 
             $request->validate([
                 'category' => 'required',
@@ -35,11 +33,16 @@ class CategoryController extends Controller
             $filename = time() . '.' . $request->image->extension();
             $request->image->move(public_path('img/category'), $filename);
 
-            $category->name = $request->category;
-            $category->image = $filename;
-            $category->save();
+            $data = [
+                'name' => $request->input('category'),
+                'image' => $filename,
+                'created_at' => now(),
+                'updated_at' => now()
+            ];
 
-            return redirect(route('admin.category'))->with('success-added', "Berhasil Menambahkan $category->name");
+            DB::table('categories')->insert($data);
+
+            return redirect(route('admin.category'))->with('success-added', "Berhasil Menambahkan $request->category");
         } catch (Throwable $caught) {
             dd($caught);
         }
@@ -47,8 +50,8 @@ class CategoryController extends Controller
 
     public function edit(string $id)
     {
-        $category = Category::find($id);
-        return view('admin.category.edit', ['category' => $category]);
+        $category = DB::table('categories')->find($id);
+        return view('admin.category.edit', compact('category'));
     }
 
     public function update(Request $request, string $id)
@@ -58,7 +61,11 @@ class CategoryController extends Controller
             'image' => 'image|mimes:png,jpg,jpeg',
         ]);
 
-        $category = Category::find($id);
+        $category = DB::table('categories')->where('id', $id)->first();
+
+        $data = [
+            'name' => $request->input('category')
+        ];
 
         if ($request->has('image')) {
             $path = "img/category/";
@@ -67,20 +74,20 @@ class CategoryController extends Controller
             $filename = time() . '.' . $request->image->extension();
             $request->image->move(public_path('img/category'), $filename);
 
-            $category->image = $filename;
-            $category->save();
+            $data['image'] = $filename;
         }
-        $category->name = $request->category;
-        $category->save();
+
+        DB::table('categories')->where('id', $id)->update($data);
         return redirect(route('admin.category'))->with('success-updated', 'Kategori berhasil diupdate');
     }
 
     public function destroy(string $id)
     {
-        $category = Category::find($id);
+        $category = DB::table('categories')->find($id);
         $path = "img/category/";
         File::delete($path . $category->image);
-        $category->delete();
+        DB::table('categories')->where('id', $id)->delete();
+
         return redirect(route('admin.category'))->with('success-deleted', "$category->name berhasil dihapus");;
     }
 }

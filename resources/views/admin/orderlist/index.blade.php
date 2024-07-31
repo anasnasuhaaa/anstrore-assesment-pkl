@@ -49,10 +49,10 @@
                                             {{ ++$i }}
                                         </th>
                                         <td class="px-6 py-4 text-gray-700">
-                                            {{ $item->user->email }}
+                                            {{ $item->user_email }}
                                         </td>
                                         <td class="px-6 py-4 text-gray-700   ">
-                                            {{ Str::limit($item->product->name, 10, '...') }}
+                                            {{ Str::limit($item->product_name, 10, '...') }}
                                         </td>
 
                                         <td class="px-6 py-4 text-gray-700">

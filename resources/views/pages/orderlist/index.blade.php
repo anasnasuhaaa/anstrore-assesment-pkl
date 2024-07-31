@@ -36,11 +36,11 @@
                                             {{ ++$i }}
                                         </th>
                                         <td class="px-6 py-4 text-gray-700">
-                                            <img src="{{ asset('img/product/' . $item->product->image) }}" class="w-16"
-                                                alt="{{ $item->product->name }}">
+                                            <img src="{{ asset('img/product/' . $item->product_image) }}" class="w-16"
+                                                alt="{{ $item->product_name }}">
                                         </td>
                                         <td class="px-6 py-4 text-gray-700   ">
-                                            {{ Str::limit($item->product->name, 15, '...') }}
+                                            {{ Str::limit($item->product_name, 15, '...') }}
                                         </td>
 
                                         <td class="px-6 py-4 text-gray-700">
@@ -72,7 +72,7 @@
                                         @endif
 
                                         <td class="px-6 py-4 text-center">
-                                            <a href="/user/orderlist/{{ $item->id }}"
+                                            <a href="{{ route('user.orderlist.show', $item->id) }}"
                                                 class="mx-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ">Detail</a>
                                         </td>
                                     </tr>

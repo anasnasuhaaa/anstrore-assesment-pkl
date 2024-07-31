@@ -46,13 +46,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function order_detail(): HasMany
-    {
-        return $this->hasMany(OrderDetails::class, 'user_id');
-    }
-    public function review(): HasMany
-    {
-        return $this->hasMany(Review::class, 'user_id');
-    }
 }

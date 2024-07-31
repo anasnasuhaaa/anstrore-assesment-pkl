@@ -2,12 +2,13 @@
 @section('content')
     <div class="mb-4 shadow-sm rounded-md p-4 bg-white">
         <div class="flex md:flex-row flex-col md:justify-start">
-            <img class="md:w-96" src="{{ asset('img/product/' . $product->image) }}" alt="">
+            <img class="md:w-96" src="{{ asset('img/product/' . $product->product_image) }}" alt="">
             <div class="ml-10 w-full flex justify-between flex-col">
                 <div class="flex justify-between">
                     <div>
                         <h1 class="text-2xl text-blue-950 font-semibold">{{ $product->name }}</h1>
-                        <h1 class="text-3xl text-red-500 font-semibold">Rp{{ number_format($product->price, 0, ',', '.') }}
+                        <h1 class="text-3xl text-red-500 font-semibold">
+                            Rp{{ number_format($product->product_price, 0, ',', '.') }}
                         </h1>
 
                     </div>
@@ -60,7 +61,7 @@
                     <figcaption class="flex items-center mt-1 space-x-3 rtl:space-x-reverse">
 
                         <div class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 ">
-                            <cite class="pe-3 font-medium text-gray-900 ">{{ $item->user->name }}</cite>
+                            <cite class="pe-3 font-medium text-gray-900 ">{{ $item->user_name }}</cite>
                             <cite class="ps-3 text-sm text-gray-500 ">{{ $item->created_at->format('d-m-Y H:i') }}</cite>
                         </div>
                     </figcaption>

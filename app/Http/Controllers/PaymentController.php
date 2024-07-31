@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
-use Illuminate\Http\Request;
 use Throwable;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PaymentController extends Controller
 {
@@ -14,8 +14,8 @@ class PaymentController extends Controller
     public function index()
     {
         //
-        $payment = Payment::all();
-        return view('admin.payment.index', ['payment' => $payment]);
+        $payment = DB::table('payments')->get();
+        return view('admin.payment.index', compact('payment'));
     }
 
     /**
@@ -34,21 +34,22 @@ class PaymentController extends Controller
     {
         //
         try {
-            $payment = new Payment();
             $request->validate([
                 'name' => 'required',
                 'image' => 'required|image|mimes:png,jpg,jpeg'
             ]);
-
             // Create Image file name and move to Public Path
             $filename = time() . '.' . $request->image->extension();
             $request->image->move(public_path('img/payment'), $filename);
 
-            $payment->image = $filename;
-            $payment->name = $request->name;
-            $payment->save();
+            $data = [
+                'name' => $request->input('name'),
+                'image' => $filename
+            ];
 
-            return redirect()->route('admin.payment.index')->with('success-added', "$payment->name berhasil ditambahkan");
+            DB::table('payments')->insert($data);
+
+            return redirect()->route('admin.payment.index')->with('success-added', "$request->name berhasil ditambahkan");
         } catch (Throwable $caugh) {
             dd($caugh);
         }
@@ -68,7 +69,7 @@ class PaymentController extends Controller
     public function edit(string $id)
     {
         //
-        $payment = Payment::find($id);
+        $payment = DB::table('payments')->find($id);
         return view('admin.payment.edit', compact('payment'));
     }
 
@@ -79,11 +80,15 @@ class PaymentController extends Controller
     {
         //
         try {
-            $payment = Payment::find($id);
+            $payment = DB::table('payments')->find($id);
             $request->validate([
                 'name' => 'required',
                 'image' => 'image|mimes:png,jpg,jpeg'
             ]);
+
+            $data = [
+                'name' => $request->input('name'),
+            ];
 
             if ($request->hasFile('image')) {
                 // Create Image file name and move to Public Path
@@ -94,10 +99,11 @@ class PaymentController extends Controller
                     unlink(public_path('img/payment/' . $payment->image));
                 }
                 // Update Image
-                $payment->image = $filename;
+                $data['image'] = $filename;
             }
-            $payment->name = $request->name;
-            $payment->save();
+
+            DB::table('payments')->where('id', $id)->update($data);
+
             return redirect()->route('admin.payment.index')->with('success-updated', 'Payment Berhasil diupdate');
         } catch (Throwable $caugh) {
             dd($caugh);
@@ -112,11 +118,11 @@ class PaymentController extends Controller
     {
         //
         try {
-            $payment = Payment::find($id);
+            $payment = DB::table('payments')->find($id);
             if (file_exists(public_path('img/payment/' . $payment->image))) {
                 unlink(public_path('img/payment/' . $payment->image));
             }
-            $payment->delete();
+            DB::table('payments')->where('id', $id)->delete();
             return redirect()->route('admin.payment.index')->with('success-deleted', "$payment->name berhasil dihapus");
         } catch (Throwable $caugh) {
             dd($caugh);

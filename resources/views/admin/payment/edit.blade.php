@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <form enctype="multipart/form-data" class="mx-auto" method="POST" id="update-form-{{ $payment->id }}"
-                        action="{{ route('payment.update', $payment->id) }}">
+                        action="{{ route('admin.payment.update', $payment->id) }}">
                         @csrf
                         @method('put')
 

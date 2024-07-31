@@ -29,11 +29,11 @@
                     </a>
                     <div class="flex">
                         <i class="fa-solid fa-tag text-blue-800 pt-1"></i>
-                        <p class="text-black ml-3">{{ $item->category->name }}</p>
+                        <p class="text-black ml-3">{{ $item->category }}</p>
                     </div>
                     <div class="flex items-center mt-2.5 mb-5">
                         <span
-                            class="bg-yellow-400 text-black text-sm font-semibold px-2.5 py-0.5 rounded ">{{ $item->average_rating }}</span>
+                            class="bg-yellow-400 text-black text-sm font-semibold px-2.5 py-0.5 rounded ">{{ number_format($item->avg_rating, 1, '.', '.') }}</span>
                     </div>
                     <h1 class="text-3xl font-bold text-blue-900 ">Rp{{ number_format($item->price, 0, ',', '.') }}</h1>
 

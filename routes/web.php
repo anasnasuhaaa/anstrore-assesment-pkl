@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Product;
-use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\PaymentController;
@@ -15,15 +13,8 @@ use App\Http\Controllers\OrderlistShowController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\OrderArrivedController;
 
-Route::get('/', function () {
-    $products = Product::all()->map(function ($product) {
-        $product->average_rating = number_format($product->averageRating() ?? 0, 1, '.', '.');
-        return $product;
-    });
-    $categories = Category::all();
 
-    return view('welcome', compact('products', 'categories'));
-});
+Route::get('/', [UserProductController::class, 'all']);
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
@@ -88,7 +79,7 @@ Route::prefix('user')->middleware(['auth', 'userMiddleware'])->group(function ()
     // User Order List Routes
     Route::get('/orderlist', [OrderListController::class, 'userIndex'])->name('user.orderlist.index');
     Route::get('/orderlist/{id}', [OrderlistShowController::class, 'show'])->name('user.orderlist.show');
-    Route::post('/orderlist/{id}', [OrderArrivedController::class, 'store'])->name('user.order.arrived');
+    Route::post('/orderlist/{id}/arrived', [OrderArrivedController::class, 'store'])->name('user.orderlist.arrived');
     Route::get('/orderlist/{id}/review', [ReviewController::class, 'index'])->name('user.orderlist.review');
     Route::post('/orderlist/{id}', [ReviewController::class, 'store'])->name('review.store');
 

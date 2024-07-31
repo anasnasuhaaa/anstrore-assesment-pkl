@@ -15,16 +15,16 @@
                 <div class="p-6  text-gray-900">
                     <div class=" mx-auto shadow-md flex justify-start flex-col md:flex-row">
                         <img class="object-cover w-32  rounded-t-lg h-64 md:h-auto md:w-80 md:rounded-none md:rounded-s-lg"
-                            src="{{ asset('img/product/' . $order_details->product->image) }}" alt="">
+                            src="{{ asset('img/product/' . $order_details->product_image) }}" alt="">
                         <div>
                             <div class="grid grid-cols-4 gap-8">
                                 <div>
                                     <h1 class=" text-gray-700">Email: </h1>
-                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->user->email }}</h1>
+                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->user_email }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Nama: </h1>
-                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->user->name }}</h1>
+                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->user_name }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">No HP: </h1>
@@ -36,23 +36,23 @@
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Produk: </h1>
-                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->product->name }}
+                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->product_name }}
                                     </h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Kategori: </h1>
                                     <h1 class="text-xl text-gray-900 font-medium">
-                                        {{ $order_details->product->category->name }}</h1>
+                                        {{ $order_details->product_category }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Harga Satuan: </h1>
                                     <h1 class="text-xl text-gray-900 font-medium">
-                                        Rp{{ number_format($order_details->product->price, 0, ',', '.') }}</h1>
+                                        Rp{{ number_format($order_details->product_price, 0, ',', '.') }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Stok Tersedia: </h1>
                                     <h1 class="text-xl text-gray-900 font-medium">
-                                        {{ $order_details->product->stock }}</h1>
+                                        {{ $order_details->product_stock }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Jumlah Pesanan: </h1>
@@ -68,10 +68,10 @@
                                     <h1 class=" text-gray-700">Metode Pembayaran: </h1>
                                     <div class="flex">
                                         <img class="w-12 rounded-full"
-                                            src="{{ asset('img/payment/' . $order_details->payment->image) }}"
+                                            src="{{ asset('img/payment/' . $order_details->payment_image) }}"
                                             alt="">
                                         <h1 class="text-xl leading-10 ml-4 text-gray-900 font-medium">
-                                            {{ $order_details->payment->name }}</h1>
+                                            {{ $order_details->payment_name }}</h1>
                                     </div>
                                 </div>
                             </div>
@@ -80,22 +80,22 @@
                                 @csrf
                                 @if ($order_details->order_status == 'dikirim')
                                     <button type="button" disabled
-                                        class="mt-4 text-blue-700 w-full  border border-blue-700 0  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ">Pesanan
+                                        class="mt-4 text-blue-700 w-full  border-2 border-blue-700  font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ">Pesanan
                                         Sedang Dikirim</button>
                                 @endif
                                 @if ($order_details->order_status == 'pending')
                                     <button type="button" onclick="confirmApprove({{ $order_details->id }})"
                                         class="w-full mt-4 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 fon  t-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Approve</button>
                                 @endif
-                                @if ($order_details->order_status == 'pending')
+                                @if ($order_details->order_status == 'diterima')
+                                    <button type="button" disabled
+                                        class="mt-4 text-green-700 w-full  border-2  border-green-700   font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 ">Pesanan
+                                        Telah Diterima</button>
                                 @endif
                             </form>
                         </div>
                     </div>
-                    {{-- <form method="GET" action="{{ route('product.index') }}">
-                        <button type="submit"
-                            class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Kembali</button>
-                    </form> --}}
+
 
                 </div>
             </div>

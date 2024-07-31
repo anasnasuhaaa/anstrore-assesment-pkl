@@ -6,16 +6,16 @@
                 <div class="p-6  text-gray-900">
                     <div class=" mx-auto shadow-md flex justify-between flex-col md:flex-row">
                         <img class="object-contain aspect-square mr-2  w-[100%]  rounded-t-lg h-64 md:h-auto md:w-80 md:rounded-none md:rounded-s-lg"
-                            src="{{ asset('img/product/' . $order_details->product->image) }}" alt="">
+                            src="{{ asset('img/product/' . $order_details->product_image) }}" alt="">
                         <div class="w-full pb-4 md:w-[80%]">
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <h1 class=" text-gray-700">Email: </h1>
-                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->user->email }}</h1>
+                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->user_email }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Nama: </h1>
-                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->user->name }}</h1>
+                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->user_name }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">No HP: </h1>
@@ -27,23 +27,23 @@
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Produk: </h1>
-                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->product->name }}
+                                    <h1 class="text-xl text-gray-900 font-medium">{{ $order_details->product_name }}
                                     </h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Kategori: </h1>
                                     <h1 class="text-xl text-gray-900 font-medium">
-                                        {{ $order_details->product->category->name }}</h1>
+                                        {{ $order_details->product_category }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Harga Satuan: </h1>
                                     <h1 class="text-xl text-gray-900 font-medium">
-                                        Rp{{ number_format($order_details->product->price, 0, ',', '.') }}</h1>
+                                        Rp{{ number_format($order_details->product_price, 0, ',', '.') }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Stok Tersedia: </h1>
                                     <h1 class="text-xl text-gray-900 font-medium">
-                                        {{ $order_details->product->stock }}</h1>
+                                        {{ $order_details->product_stock }}</h1>
                                 </div>
                                 <div>
                                     <h1 class=" text-gray-700">Jumlah Pesanan: </h1>
@@ -59,14 +59,14 @@
                                     <h1 class=" text-gray-700">Metode Pembayaran: </h1>
                                     <div class="flex">
                                         <img class="w-12 rounded-full"
-                                            src="{{ asset('img/payment/' . $order_details->payment->image) }}"
+                                            src="{{ asset('img/payment/' . $order_details->payment_image) }}"
                                             alt="">
                                         <h1 class="text-xl leading-10 ml-4 text-gray-900 font-medium">
-                                            {{ $order_details->payment->name }}</h1>
+                                            {{ $order_details->payment_name }}</h1>
                                     </div>
                                 </div>
                             </div>
-                            <form method="POST" action=" user/orderlist/{{ $order_details->id }}"
+                            <form method="POST" action="{{ route('user.orderlist.arrived', $order_details->id) }}"
                                 id="confirm-form-{{ $order_details->id }}">
                                 @csrf
                                 @if ($order_details->order_status == 'diterima')
@@ -75,7 +75,7 @@
                                         Telah
                                         Diterima</button>
                                     <div class=" flex  justify-stretch">
-                                        <a href="{{ route('user.orderlist.review', $order_details->product->id) }}"
+                                        <a href="{{ route('user.orderlist.review', $order_details->product_id) }}"
                                             class=" text-white bg-blue-600 w-full hover:bg-blue-700  border-2 border-blue-600   font-medium rounded-lg text-sm px-5 py-2.5 text-center  mb-2 ">Beri
                                             Ulasan</a>
                                     </div>

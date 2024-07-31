@@ -17,7 +17,7 @@
                             src="{{ asset('img/qrcodes/' . $product->qrcode_file) }}" alt="">
                         <div class="flex w-full flex-col justify-between p-4   leading-normal">
                             <h5 class="mb-2 text-xl bg-blue-300 p-2 rounded-md font-bold tracking-tight text-gray-900 ">
-                                {{ $product->category->name }}</h5>
+                                {{ $product->category_name }}</h5>
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{ $product->name }}</h5>
                             <p class="mb-3 font-normal text-gray-700">{{ $product->description }}</p>
                             <div class="flex justify-between">

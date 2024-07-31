@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OrderDetails;
-use Illuminate\Http\Request;
-use PhpParser\Node\Expr\Cast;
 use Throwable;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderArrivedController extends Controller
 {
@@ -14,12 +13,14 @@ class OrderArrivedController extends Controller
     {
         try {
 
-            $order_detail = OrderDetails::find($request->id);
-            if ($order_detail->order_status == 'dikirim') {
-                $order_detail->order_status = 'diterima';
-                $order_detail->save();
+            $order_detail = DB::table('order_details')->where('id', $request->id)->first();
+            if ($order_detail && $order_detail->order_status == 'dikirim') {
+                DB::table('order_details')->where('id', $request->id)
+                    ->update(['order_status' => 'diterima']);
                 return redirect()->back();
             }
+
+            return redirect()->back()->withErrors('Order tidak ditemukan atau status tidak valid.');
         } catch (Throwable $err) {
             dd($err);
         }
