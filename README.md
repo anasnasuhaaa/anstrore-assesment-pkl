@@ -8,7 +8,7 @@
 </p>
 
 ## About Project
-anstrore merupakan sebuah project website e-commerce yang dikembangkan secara individu selama 7 hari oleh Anas Nasuha
+anstrore merupakan sebuah project website studi kasus sistem kelola toko online yang dikembangkan secara individu selama 7 hari, ini merupakan sebuah assesment yang diberikan oleh seorang Project Manager untuk menguji sejauh mana skill Laravel saya.
 
 ### Features
 - Authentication & Authorization
